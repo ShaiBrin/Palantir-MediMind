@@ -15,7 +15,9 @@ function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div id="root-container">
+        {children}
+
+        {/* <div id="root-container">
           <div id="root">
             <a
               href="https://www.palantir.com/docs/foundry/ontology-sdk/overview/"
@@ -42,7 +44,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
             </a>
             {children}
           </div>
-        </div>
+        </div> */}
       </body>
     </html>
   );
