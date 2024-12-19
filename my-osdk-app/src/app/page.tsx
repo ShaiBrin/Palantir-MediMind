@@ -3,10 +3,12 @@ import { $Objects, $Actions, $Queries } from "@hospital-osdk/sdk";
 import useAuthenticated from "@/lib/useAuthenticated";
 import css from "./page.module.css";
 import type { NextPage } from 'next';
+import HomePageButtons from "./components/ui/HomePageButtons";
 
 const Home: NextPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100">
+    <div className="flex flex-col items-center justify-center">
+      <HomePageButtons/>
     </div>
   );
 };
