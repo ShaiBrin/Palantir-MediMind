@@ -1,7 +1,5 @@
-import * as React from 'react';
 
-export default function SignIn() {
-
+export default function CostsPage() {
   return (
     <div>
     </div>
