@@ -22,7 +22,7 @@ function checkEnv(
 
 // Lazily configure the auth and client to prevent them from being used in pre-rendering
 let auth: PublicOauthClient | null = null;
-let client: Client | null = null;
+export let client: Client | null = null;
 
 export const getAuth = () => {
   if (auth == null) {

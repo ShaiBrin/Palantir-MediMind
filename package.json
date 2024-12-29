@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@osdk/client": "^2.0.11",
+    "@osdk/oauth": "^1.0.1"
+  }
+}
