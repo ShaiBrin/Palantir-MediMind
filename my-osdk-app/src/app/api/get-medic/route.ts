@@ -2,7 +2,7 @@ import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
 // Define the expected structure of each row returned by the query
-type MedicationRow = {
+interface MedicationRow  {
   description: string;
   ndcID: number;
   oldPrice: number;
@@ -17,15 +17,15 @@ type MedicationRow = {
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    const ndcID = url.searchParams.get("ndcID");
+    const medicationName = url.searchParams.get("medicationName");
 
-    if (!ndcID) {
-      return NextResponse.json({ error: 'NDC ID is required' }, { status: 400 });
+    if (!medicationName) {
+      return NextResponse.json({ error: 'Medication name is required' }, { status: 400 });
     }
 
-    // Fetch data from the "MedicCosts" table where ndcID matches the provided value
+    // Fetch data from the "MedicCosts" table where description contains the medicationName (case-insensitive)
     const result = await sql<MedicationRow[]>`
-      SELECT * FROM MedicCosts WHERE ndcID = ${ndcID};
+      SELECT * FROM MedicCosts WHERE description ILIKE ${'%' + medicationName + '%'} LIMIT 1;;
     `;
 
     return NextResponse.json({ medications: result.rows });
