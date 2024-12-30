@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { auth } from "@/lib/client";
 
+
 function Login() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const router = useRouter();
   const [token, setToken] = useState<string | undefined>(undefined);
   useEffect(() => {
-    setToken(auth.getTokenOrUndefined());
+    setToken(auth.getTokenOrUndefined()); 
   }, []);
 
   const handleLogin = useCallback(async () => {

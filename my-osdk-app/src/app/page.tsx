@@ -5,9 +5,9 @@ import css from "./page.module.css";
 import client from "@/lib/client";
 import { Osdk } from "@osdk/client";
 import { Patient } from "@hospital-osdk/sdk";
-import { useEffect, useState } from "react";
 
-const primaryKey = 0;
+const responseNoErrorWrapper: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(2);
+
 
 function Home() {
   const authenticated = useAuthenticated();
@@ -28,7 +28,7 @@ function Home() {
         now.
       </p>
       <h1>
-        {/* {responseNoErrorWrapper?.age} */}
+        {responseNoErrorWrapper?.age}
       </h1>
       <h3>
         {/* Ontology Object : {osdkProject.} */}
