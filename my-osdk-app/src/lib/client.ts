@@ -21,12 +21,19 @@ function checkEnv(
 }
 
 // Lazily configure the auth and client to prevent them from being used in pre-rendering
-let auth: PublicOauthClient | null = null;
-export let client: Client | null = null;
+// let auth: PublicOauthClient | null = null;
+// export let client: Client | null = null;
+
+export const auth : PublicOauthClient =
+    createPublicOauthClient(
+      clientId,
+      url,
+      redirectUrl,
+    );
 
 export const getAuth = () => {
   if (auth == null) {
-    auth = createPublicOauthClient(
+    createPublicOauthClient(
       clientId,
       url,
       redirectUrl,
@@ -34,14 +41,10 @@ export const getAuth = () => {
   }
   return auth;
 }
+const client: Client = createClient(
+  url,
+  $ontologyRid,
+  auth
+);
 
-export const getClient = () => {
-  if (client == null) {
-    client = createClient(
-      url,
-      $ontologyRid,
-      getAuth(),
-    );
-  }
-  return client;
-}
+export default client;

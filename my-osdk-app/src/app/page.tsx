@@ -2,12 +2,12 @@
 import { $Objects, $Actions, $Queries, PatientMedication } from "@hospital-osdk/sdk";
 import useAuthenticated from "@/lib/useAuthenticated";
 import css from "./page.module.css";
-import { client } from "../lib/client";
+import client from "@/lib/client";
 import { Osdk } from "@osdk/client";
 import { Patient } from "@hospital-osdk/sdk";
+import { useEffect, useState } from "react";
 
-const primaryKey = 0
-const osdkProject: Osdk.Instance<Patient> = await client(Patient).fetchOne(primaryKey);
+const primaryKey = 0;
 
 function Home() {
   const authenticated = useAuthenticated();
@@ -15,23 +15,23 @@ function Home() {
   if (!authenticated) {
     return null;
   }
-  
+
   const objectApiNames = Object.keys($Objects);
   const actionApiNames = Object.keys($Actions);
   const queryApiNames = Object.keys($Queries);
-  const clientInstance = client
 
   return (
     <div>
-      <h1>@hospital-osdk/sdk</h1>
+      <h1>{"I'm " + authenticated}</h1>
       <p>
         Welcome to your Ontology SDK! Try using any of the following methods
         now.
       </p>
+      <h1>
+        {/* {responseNoErrorWrapper?.age} */}
+      </h1>
       <h3>
-        Ontology Object : {osdkProject.}
-
-
+        {/* Ontology Object : {osdkProject.} */}
       </h3>
       <div className={css.methods}>
         <div>
