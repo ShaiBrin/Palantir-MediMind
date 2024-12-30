@@ -1,19 +1,68 @@
 "use client";
-import { PatientMedication } from "@hospital-osdk/sdk";
-import { Osdk } from "@osdk/client";
-import CostsLayout from "./layout";
-import client from "@/lib/client";
+import { useState, useEffect } from "react";
 
-const responseNoErrorWrapper: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(2);
+const CostsPage = () => {
+  const [medication, setMedication] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-function MyComponent() {
+  const ndcID = 59762080006; // Example NDC ID, you can change this as needed
+
+  // Function to fetch medication data based on NDC ID
+  const fetchMedication = async (ndcID: number) => {
+    try {
+      // Call your API endpoint to fetch medication details
+      const response = await fetch(`/api/get-medic?ndcID=${ndcID}`);
+      
+      if (!response.ok) {
+        throw new Error("Failed to fetch medication data");
+      }
+
+      const data = await response.json();
+      setMedication(data.medications); // Assuming the response structure contains the medications
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMedication(ndcID); // Fetch medication data when the component mounts
+  }, [ndcID]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
-    <CostsLayout>
+    <div>
+      <h1>Medications</h1>
       <div>
-        {responseNoErrorWrapper.gender}
+        {medication ? (
+          <div>
+            <h2>Medication Details</h2>
+            <ul>
+              {medication.map((med: any, index: number) => (
+                <li key={index}>
+                  <strong>Description:</strong> {med.description} <br />
+                  <strong>Classification:</strong> {med.classification} <br />
+                  <strong>Price Change:</strong> {med.percentChange}% <br />
+                  <strong>Reason:</strong> {med.reason}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div>No medication found for this NDC ID</div>
+        )}
       </div>
-    </CostsLayout>
+    </div>
   );
-}
+};
 
-export default MyComponent;
+export default CostsPage;
