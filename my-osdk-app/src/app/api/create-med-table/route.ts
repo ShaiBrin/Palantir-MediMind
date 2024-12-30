@@ -6,14 +6,15 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
     try {
     const result = await sql`
-        CREATE TABLE Medications (
+        CREATE TABLE MedicCosts (
         description VARCHAR(255) NOT NULL,
-        ndcID FLOAT PRIMARY KEY,
-        oldPrice DECIMAL(10, 2),
-        newPrice DECIMAL(10, 2),
+        ndcID VARCHAR(50) PRIMARY KEY, -- Store NDC as a string to match the CSV format
+        oldPrice DECIMAL(10, 5),       -- Increase precision to handle more decimal places
+        newPrice DECIMAL(10, 5),       -- Match the precision of oldPrice
         classification VARCHAR(255),
-        percentChange FLOAT,
+        percentChange DECIMAL(10, 2),  -- Store percentage changes as decimals
         reason VARCHAR(255),
+        startDate DATE,
         endDate DATE,
         effData DATE
     );
