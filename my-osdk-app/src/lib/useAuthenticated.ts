@@ -1,15 +1,14 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAuth } from "./client";
+import { auth } from "./client";
 
 function useAuthenticated() {
   const router = useRouter();
   const [token, setToken] = useState<string | undefined>(undefined);
   useEffect(() => {
-    setToken(getAuth().getTokenOrUndefined());
+    setToken(auth.getTokenOrUndefined());
   }, []);
   useEffect(() => {
-    const auth = getAuth();
     if (auth.getTokenOrUndefined() == null) {
       auth
         .refresh()

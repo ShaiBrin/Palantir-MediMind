@@ -27,10 +27,17 @@ yarn-error.log*
 
 # local env files
 .env*.local
-
+.env.production
+.env.development
+.env.development.local
+.env
 # vercel
 .vercel
+
+*.csv
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+ backup-repo
