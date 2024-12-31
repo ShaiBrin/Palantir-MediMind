@@ -14,11 +14,11 @@ const LeftSide = () => {
   
     return (
       <div>
-        <h2>Left Side Component</h2>
+        <h2>Select your patient ID</h2>
         <select
           value={selectedValue}
           onChange={(e) => setSelectedValue(e.target.value)}
-          style={{ padding: "8px", fontSize: "16px", width: "100%" }}
+          style={{ padding: "8px", fontSize: "16px", width: "100%" , color:"black"}}
         >
           {Array.from({ length: 11 }, (_, i) => (
             <option key={i} value={i}>

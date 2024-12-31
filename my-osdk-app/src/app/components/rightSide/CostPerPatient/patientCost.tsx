@@ -18,6 +18,7 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
   const [totalPrice, setTotalPrice] = useState(0); // State for total price
   const num = Number(sharedText);
   const patientMeds = patientsMeds[num];
+
   const patientMedicationJson = patientMeds.medicationJson ? JSON.parse(patientMeds.medicationJson) : null;
 
   // Function to fetch medication data based on description

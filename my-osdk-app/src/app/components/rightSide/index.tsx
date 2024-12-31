@@ -11,7 +11,7 @@ const RightSide = () => {
     return (
       <div>
         <p style={{ padding: "8px", fontSize: "16px", border: "1px solid #ccc" }}>
-          {sharedText || "No text provided yet."}
+          {"Patient ID: " + sharedText || "No ID selected"}
         </p>
         <CostPerPatient sharedText={sharedText} />
       </div>
