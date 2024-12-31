@@ -4,6 +4,8 @@ import useAuthenticated from "@/lib/useAuthenticated";
 import client from "@/lib/client";
 import { Osdk } from "@osdk/client";
 import HomePageButtons from "./components/ui/HomePageButtons";
+import store from "@/store";
+import { Provider } from "react-redux";
 
 const responseNoErrorWrapper: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(2);
 
@@ -17,7 +19,7 @@ function Home() {
 
 
   return (
-    <HomePageButtons />
+      <HomePageButtons />
   );
 }
 

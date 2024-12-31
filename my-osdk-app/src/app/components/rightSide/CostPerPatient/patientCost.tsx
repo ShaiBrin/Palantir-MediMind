@@ -54,8 +54,7 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
 
       // Check if the frequency multiplier exists before applying it
       if (frequencyMultiplier) {
-        const updatedPrice = med.newprice * frequencyMultiplier;
-
+        const updatedPrice = med.newprice * frequencyMultiplier ; 
         // Round the price to 2 decimal places
         const roundedPrice = Math.round(updatedPrice * 100) / 100;
 
@@ -125,8 +124,9 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
         </div>
       ))}
       <div style={{ marginTop: "20px", fontWeight: "bold" }}>
-        <strong>Total Cost:</strong> {totalPrice} $
-      </div>
+  {/* // Multiply by to know how much it cost per week (5 days) */}
+  <strong>Total Cost (weekly) :</strong> {(totalPrice * 5).toFixed(2)} $   
+</div>
     </div>
   );
 };

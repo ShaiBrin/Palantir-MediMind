@@ -20,7 +20,7 @@ const LeftSide = () => {
           onChange={(e) => setSelectedValue(e.target.value)}
           style={{ padding: "8px", fontSize: "16px", width: "100%" , color:"black"}}
         >
-          {Array.from({ length: 11 }, (_, i) => (
+          {Array.from({ length: 476 }, (_, i) => (
             <option key={i} value={i}>
               {i}
             </option>
