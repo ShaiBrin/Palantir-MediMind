@@ -25,7 +25,11 @@ export const dosageMapping = (frequency: string): number => {
     lowerCaseFrequency.includes("every 6 hours")
   ) {
     return 4;
-  } else {
+  } 
+  else if (
+    lowerCaseFrequency.includes("every 4 hours") 
+  ) return 6
+  else {
     return 1;
   }
 };

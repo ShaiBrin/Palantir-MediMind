@@ -5,7 +5,8 @@ import { Osdk } from "@osdk/client";
 import client from "@/lib/client";
 import { dosageMapping } from "../components/rightSide/DosageMapping";
 
-const patients: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(2);
+const patients: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(77);
+
 
 const CostsPage = () => {
   const [medicationsFound, setMedicationsFound] = useState<any[]>([]);
@@ -20,7 +21,6 @@ const CostsPage = () => {
   // Function to fetch medication data based on description
   const fetchMedication = async (name: string, ind: number) => {
     try {
-      console.log(`Fetching medication: ${name}`);
       const response = await fetch(`/api/get-medic?medicationName=${name}`);
 
       if (!response.ok) {
@@ -52,7 +52,11 @@ const CostsPage = () => {
       // Check if the frequency multiplier exists before applying it
       if (frequencyMultiplier) {
         const updatedPrice = med.newprice * frequencyMultiplier;
-        return { ...med, updatedPrice };
+
+        // Round the price to 2 decimal places
+        const roundedPrice = Math.round(updatedPrice * 100) / 100;
+
+        return { ...med, updatedPrice: roundedPrice };
       }
 
       // If no frequency multiplier is available, return the original medication data
@@ -82,8 +86,10 @@ const CostsPage = () => {
   const updatedMedications = calculatePrice(); // Get the updated medications and calculate total price
 
   useEffect(() => {
+    // Calculate the total price by summing the updatedPrice values and rounding the result to 2 decimal places
     const total = updatedMedications.reduce((sum, med) => sum + (med.updatedPrice || 0), 0);
-    setTotalPrice(total);
+    const roundedTotalPrice = Math.round(total * 100) / 100; // Round the total price to 2 decimal places
+    setTotalPrice(roundedTotalPrice);
   }, [updatedMedications]); // Only re-run when updatedMedications change
 
   if (loading) {
@@ -94,7 +100,6 @@ const CostsPage = () => {
     return <div>Error: {error}</div>;
   }
 
- 
   return (
     <div>
       {updatedMedications.map((med, index) => (
@@ -108,15 +113,15 @@ const CostsPage = () => {
         >
           <li style={{ listStyle: "none" }}>
             <strong>Name:</strong> {med.description} <br />
-            <strong>Price:</strong> {med.newprice} <br />
+            <strong>Unit Price:</strong> {med.newprice} $<br />
             <strong>Price Change:</strong> {med.percentchange} % <br />
             <strong>Classification:</strong> {med.classification} <br />
-            <strong>Total Cost:</strong> {med.updatedPrice} <br />
+            <strong>Total:</strong> {med.updatedPrice} $<br />
           </li>
         </div>
       ))}
       <div style={{ marginTop: "20px", fontWeight: "bold" }}>
-        <strong>Total Cost:</strong> {totalPrice} 
+        <strong>Total Cost:</strong> {totalPrice} $
       </div>
     </div>
   );
