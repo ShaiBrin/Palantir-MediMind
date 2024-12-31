@@ -5,48 +5,20 @@ import { Osdk } from "@osdk/client";
 import client from "@/lib/client";
 import { dosageMapping } from "../components/rightSide/DosageMapping";
 
-
-// const dosageMapping = (frequency: string): number => {
-//   const lowerCaseFrequency = frequency.toLowerCase();
-
-//   if (
-//     lowerCaseFrequency.includes("once a day") ||
-//     lowerCaseFrequency.includes("once daily") ||
-//     lowerCaseFrequency.includes("daily") ||
-//     lowerCaseFrequency.includes("as needed") ||
-//     lowerCaseFrequency.includes("day 1")
-//   ) {
-//     return 1;
-//   } else if (lowerCaseFrequency.includes("twice daily")) {
-//     return 2;
-//   } else if (
-//     lowerCaseFrequency.includes("three times a day") ||
-//     lowerCaseFrequency.includes("every 8 hours") ||
-//     lowerCaseFrequency.includes("before meals")
-//   ) {
-//     return 3;
-//   } else if (
-//     lowerCaseFrequency.includes("four times daily") ||
-//     lowerCaseFrequency.includes("every 6 hours")
-//   ) {
-//     return 4;
-//   } else {
-//     return 1;
-//   }
-// };
 const patients: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(2);
 
 const CostsPage = () => {
   const [medicationsFound, setMedicationsFound] = useState<any[]>([]);
-  const [frequency, setFrequency] =  useState<any[]>([]);
+  const [frequency, setFrequency] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0); // State for total price
 
   console.log("Patient data:", patients.medicationJson);
   const patientMedicationJson = patients.medicationJson ? JSON.parse(patients.medicationJson) : null;
 
   // Function to fetch medication data based on description
-  const fetchMedication = async (name: string, ind:number) => {
+  const fetchMedication = async (name: string, ind: number) => {
     try {
       console.log(`Fetching medication: ${name}`);
       const response = await fetch(`/api/get-medic?medicationName=${name}`);
@@ -62,7 +34,6 @@ const CostsPage = () => {
         setMedicationsFound((prev) => [...prev, ...data.medications]); // Flatten and append
         const freq = patientMedicationJson.map((med: any) => med.dosage.frequency);
         const fre = dosageMapping(freq[ind]);
-        console.log("Frequency:", fre);
         setFrequency((prev) => [...prev, fre]);
       } else {
         console.warn(`No medication data found for ${name}`);
@@ -71,22 +42,24 @@ const CostsPage = () => {
       setError(error.message);
     }
   };
-  
-   // Function to calculate updated price based on frequency
-   const calculatePrice = () => {
-    return medicationsFound.map((med, index) => {
-      // Access the corresponding frequency value from frequencyZ using the same index
-      const frequencyMultiplier = frequency[index]; 
-  
+
+  // Function to calculate updated price based on frequency
+  const calculatePrice = () => {
+    const updatedMedications = medicationsFound.map((med, index) => {
+      // Access the corresponding frequency value from frequency using the same index
+      const frequencyMultiplier = frequency[index];
+
       // Check if the frequency multiplier exists before applying it
       if (frequencyMultiplier) {
         const updatedPrice = med.newprice * frequencyMultiplier;
         return { ...med, updatedPrice };
       }
-  
+
       // If no frequency multiplier is available, return the original medication data
       return { ...med };
     });
+
+    return updatedMedications;
   };
 
   // Function to extract medication names and check them in the database
@@ -98,7 +71,7 @@ const CostsPage = () => {
       let ind = 0;
       for (const name of names) {
         await fetchMedication(name, ind);
-        ind+=1
+        ind += 1;
       }
       setLoading(false);
     };
@@ -106,8 +79,12 @@ const CostsPage = () => {
     fetchAllMedications();
   }, []);
 
-  const updatedMedications = calculatePrice();
+  const updatedMedications = calculatePrice(); // Get the updated medications and calculate total price
 
+  useEffect(() => {
+    const total = updatedMedications.reduce((sum, med) => sum + (med.updatedPrice || 0), 0);
+    setTotalPrice(total);
+  }, [updatedMedications]); // Only re-run when updatedMedications change
 
   if (loading) {
     return <div>Loading...</div>;
@@ -117,6 +94,7 @@ const CostsPage = () => {
     return <div>Error: {error}</div>;
   }
 
+ 
   return (
     <div>
       {updatedMedications.map((med, index) => (
@@ -130,7 +108,6 @@ const CostsPage = () => {
         >
           <li style={{ listStyle: "none" }}>
             <strong>Name:</strong> {med.description} <br />
-            {/* <strong>Frequency:</strong> {med.dosage.frequency} <br /> */}
             <strong>Price:</strong> {med.newprice} <br />
             <strong>Price Change:</strong> {med.percentchange} % <br />
             <strong>Classification:</strong> {med.classification} <br />
@@ -138,6 +115,9 @@ const CostsPage = () => {
           </li>
         </div>
       ))}
+      <div style={{ marginTop: "20px", fontWeight: "bold" }}>
+        <strong>Total Cost:</strong> {totalPrice} 
+      </div>
     </div>
   );
 };
