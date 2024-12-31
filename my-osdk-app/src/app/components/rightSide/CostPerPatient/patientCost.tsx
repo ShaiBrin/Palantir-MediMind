@@ -18,8 +18,6 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
   const [totalPrice, setTotalPrice] = useState(0); // State for total price
   const num = Number(sharedText);
   const patientMeds = patientsMeds[num];
-  console.log("Num " + num);
-  console.log("YOOOOO " + patientMeds.age);
   const patientMedicationJson = patientMeds.medicationJson ? JSON.parse(patientMeds.medicationJson) : null;
 
   // Function to fetch medication data based on description
@@ -72,7 +70,7 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
 
   // Function to extract medication names and check them in the database
   useEffect(() => {
-    console.log("Use effect");
+    setMedicationsFound([]); // Reset medicationsFound
     const fetchAllMedications = async () => {
       setLoading(true);
       const names = patientMedicationJson.map((med: any) => med.name);
