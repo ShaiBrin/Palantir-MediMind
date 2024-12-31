@@ -10,7 +10,7 @@ export default function HomePageButtons
   return (
     
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-      <Link href="/costs" passHref>
+      <Link href="/patients" passHref>
       <Button variant="contained" color="primary" style={{ borderRadius: '50%', minWidth: '64px', height: '64px', margin: '0 8px' }}>
         <CleaningServices/>
       </Button>
