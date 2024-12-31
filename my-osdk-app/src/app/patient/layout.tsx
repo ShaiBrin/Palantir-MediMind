@@ -20,19 +20,27 @@ export default function CostsLayout({
         height: "100vh",
         width: "100%",
         marginTop: "20px",
-        backgroundColor: "#121212",
-        color: "#FFFFFF",
+        backgroundColor: "#FFFFFF",
+        color: "#000000",
       }}
     >
       {/* Title */}
-      <div
+      <button
         style={{
+          marginTop: "10px",
+          padding: "20px 20px",
           fontSize: "2rem",
           fontWeight: "bold",
+          backgroundColor: "#007BFF",
+          color: "#FFFFFF",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
         }}
+        onClick={() => window.location.href = "/"}
       >
         MediMind
-      </div>
+      </button>
 
       {/* Main content area */}
       <div
@@ -40,7 +48,8 @@ export default function CostsLayout({
           display: "flex",
           width: "100%",
           flexGrow: 1,
-          marginTop: "20px",
+          marginTop: "15px",
+          padding: "20px"
         }}
       >
         {/* Left side */}
@@ -48,9 +57,10 @@ export default function CostsLayout({
           style={{
             width: "33.33%",
             padding: "10px",
-            backgroundColor: "#1E1E1E",
-            marginRight: "10px",
-            color: "#FFFFFF",
+            backgroundColor: "#ADD8E6",
+            marginRight: "20px",
+            color: "#000000",
+            marginBottom: "30px"
           }}
         >
           <LeftSide sharedText={sharedText} setSharedText={setSharedText} />
@@ -61,8 +71,10 @@ export default function CostsLayout({
           style={{
             width: "66.66%",
             padding: "10px",
-            backgroundColor: "#292929",
-            color: "#FFFFFF",
+            backgroundColor: "#E0E0E0",
+            color: "#000000",
+            marginBottom: "30px",
+            marginLeft: "20px"
           }}
         >
           <RightSide sharedText={sharedText} />
