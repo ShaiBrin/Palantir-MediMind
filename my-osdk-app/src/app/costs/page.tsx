@@ -4,70 +4,108 @@ import { PatientMedication } from "@hospital-osdk/sdk";
 import { Osdk } from "@osdk/client";
 import client from "@/lib/client";
 
-const patients: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(2);
-interface MedicationRow  {
-  description: string;
-  ndcID: number;
-  oldPrice: number;
-  newPrice: number;
-  classification: string;
-  percentChange: number;
-  reason: string;
-  endDate: string;
-  effData: string;
+
+const dosageMapping = (frequency: string): number => {
+  const lowerCaseFrequency = frequency.toLowerCase();
+
+  if (
+    lowerCaseFrequency.includes("once a day") ||
+    lowerCaseFrequency.includes("once daily") ||
+    lowerCaseFrequency.includes("daily") ||
+    lowerCaseFrequency.includes("as needed") ||
+    lowerCaseFrequency.includes("day 1")
+  ) {
+    return 1;
+  } else if (lowerCaseFrequency.includes("twice daily")) {
+    return 2;
+  } else if (
+    lowerCaseFrequency.includes("three times a day") ||
+    lowerCaseFrequency.includes("every 8 hours") ||
+    lowerCaseFrequency.includes("before meals")
+  ) {
+    return 3;
+  } else if (
+    lowerCaseFrequency.includes("four times daily") ||
+    lowerCaseFrequency.includes("every 6 hours")
+  ) {
+    return 4;
+  } else {
+    return 1;
+  }
 };
+const patients: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(2);
+
 const CostsPage = () => {
   const [medicationsFound, setMedicationsFound] = useState<any[]>([]);
+  const [frequency, setFrequency] =  useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const patient = {
-    medicationJSON: [
-      { name: "TOLTERODINE", dosage: { quantity: 6, measure: "mg", frequency: "once daily" } },
-      // { name: "Remdesivir", dosage: { quantity: 200, measure: "mg", frequency: "on day 1, then 100 mg once daily" } },
-      { name: "Enoxaparin", dosage: { quantity: 40, measure: "mg", frequency: "once daily" } },
-    ],
-  };
+  console.log("Patient data:", patients.medicationJson);
+  const patientMedicationJson = patients.medicationJson ? JSON.parse(patients.medicationJson) : null;
 
   // Function to fetch medication data based on description
-  const fetchMedication = async (name: string) => {
+  const fetchMedication = async (name: string, ind:number) => {
     try {
-      // Call your API endpoint to fetch medication details based on the description
+      console.log(`Fetching medication: ${name}`);
       const response = await fetch(`/api/get-medic?medicationName=${name}`);
 
       if (!response.ok) {
-        throw new Error("Failed to fetch medication data");
+        throw new Error(`Failed to fetch medication data for ${name}`);
       }
 
       const data = await response.json();
+      console.log(`Response data for ${name}:`, data.medications);
+
       if (data.medications) {
-        console.log("length " + data.medications[0].effData);
-        setMedicationsFound((prev) => [...prev, data.medications]); // Add found medication to the list
+        setMedicationsFound((prev) => [...prev, ...data.medications]); // Flatten and append
+        const freq = patientMedicationJson.map((med: any) => med.dosage.frequency);
+        const fre = dosageMapping(freq[ind]);
+        console.log("Frequency:", fre);
+        setFrequency((prev) => [...prev, fre]);
       } else {
-        setMedicationsFound((prev) => [...prev, { description: "", ndcID: 0, oldPrice: 0, newPrice: 0, classification: "", percentChange: 0, reason: "", endDate: "", effData: "" }]); // Not found
+        console.warn(`No medication data found for ${name}`);
       }
     } catch (error: any) {
       setError(error.message);
     }
-
-    // console.log("Pieere " + medicationsFound[0].effData);
-
+  };
+  
+   // Function to calculate updated price based on frequency
+   const calculatePrice = () => {
+    return medicationsFound.map((med, index) => {
+      // Access the corresponding frequency value from frequencyZ using the same index
+      const frequencyMultiplier = frequency[index]; 
+  
+      // Check if the frequency multiplier exists before applying it
+      if (frequencyMultiplier) {
+        const updatedPrice = med.newprice * frequencyMultiplier;
+        return { ...med, updatedPrice };
+      }
+  
+      // If no frequency multiplier is available, return the original medication data
+      return { ...med };
+    });
   };
 
   // Function to extract medication names and check them in the database
   useEffect(() => {
     const fetchAllMedications = async () => {
       setLoading(true);
-      const names = patient.medicationJSON.map((med) => med.name);
+      const names = patientMedicationJson.map((med: any) => med.name);
+
+      let ind = 0;
       for (const name of names) {
-        console.log("YO " + name);
-        await fetchMedication(name);
+        await fetchMedication(name, ind);
+        ind+=1
       }
       setLoading(false);
     };
 
     fetchAllMedications();
   }, []);
+
+  const updatedMedications = calculatePrice();
 
 
   if (loading) {
@@ -80,22 +118,25 @@ const CostsPage = () => {
 
   return (
     <div>
-      <h1>Medications Found</h1>
-      {medicationsFound.length > 0 ? (
-        <ul>
-          {medicationsFound.map((med, index) => (
-            <li key={index}>
-              <strong>Name:</strong> {med.description || med.description} <br />
-              <strong>Classification:</strong> {med.classification || "N/A"} <br />
-              <strong>Price Change:</strong> {med.percentChange || "N/A"}% <br />
-              <strong>Reason:</strong> {med.reason || "N/A"} <br />
-              {med.endDate && <strong>Message:</strong>} {med.newPrice || ""}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div>No medication data found</div>
-      )}
+      {updatedMedications.map((med, index) => (
+        <div
+          key={`${med.description}-${index}`}
+          style={{
+            marginBottom: "20px", // Add space between each medication
+            padding: "10px", // Optional padding for better layout
+            borderBottom: "1px solid #ccc", // Optional: A line separator for clarity
+          }}
+        >
+          <li style={{ listStyle: "none" }}>
+            <strong>Name:</strong> {med.description} <br />
+            {/* <strong>Frequency:</strong> {med.dosage.frequency} <br /> */}
+            <strong>Price:</strong> {med.newprice} <br />
+            <strong>Price Change:</strong> {med.percentchange} % <br />
+            <strong>Classification:</strong> {med.classification} <br />
+            <strong>Total Cost:</strong> {med.updatedPrice} <br />
+          </li>
+        </div>
+      ))}
     </div>
   );
 };

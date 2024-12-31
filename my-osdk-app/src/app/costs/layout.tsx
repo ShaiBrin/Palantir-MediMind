@@ -12,6 +12,8 @@ export default function CostsLayout({ children }: { children: React.ReactNode })
         height: "100vh",
         width: "100%",
         marginTop: "20px",
+        backgroundColor: "#121212", // Dark background color
+        color: "#FFFFFF", // White font color for contrast
       }}
     >
       {/* Title */}
@@ -38,8 +40,9 @@ export default function CostsLayout({ children }: { children: React.ReactNode })
           style={{
             width: "33.33%", // 1/3 of the width
             padding: "10px", // Adjust padding as needed
-            backgroundColor: "#f0f0f0", // Just for visibility
+            backgroundColor: "#1E1E1E", // Darker shade for left side
             marginRight: "10px", // Add margin between left and right
+            color: "#FFFFFF", // Ensure text color matches the theme
           }}
         >
           {/* Left component goes here */}
@@ -51,7 +54,8 @@ export default function CostsLayout({ children }: { children: React.ReactNode })
           style={{
             width: "66.66%", // 2/3 of the width
             padding: "10px", // Adjust padding as needed
-            backgroundColor: "#e0e0e0", // Just for visibility
+            backgroundColor: "#292929", // Darker shade for right side
+            color: "#FFFFFF", // Ensure text color matches the theme
           }}
         >
           {/* Right component goes here */}
