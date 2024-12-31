@@ -1,19 +1,14 @@
-"use client";
-import { useState, useEffect } from "react";
-import { PatientMedication, PatientTherapies } from "@hospital-osdk/sdk";
+import React, { useState, useEffect } from "react";
 import { Osdk } from "@osdk/client";
 import client from "@/lib/client";
 import { dosageMapping } from "../DosageMapping";
+import { PatientMedication } from "@hospital-osdk/sdk";
 
-// const patientMeds: Osdk.Instance<PatientMedication> = await client(PatientMedication).fetchOne(66);
-// const patientTherapies: Osdk.Instance<PatientTherapies> = await client(PatientTherapies).fetchOne(65);
+const patientsMeds: Osdk.Instance<PatientMedication>[] = [];
 
-const patientsMeds: Osdk.Instance<PatientMedication>[]= [];
-
-for await(const obj of client(PatientMedication).asyncIter()) {
-    patientsMeds.push(obj);
+for await (const obj of client(PatientMedication).asyncIter()) {
+  patientsMeds.push(obj);
 }
-
 
 const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
   const [medicationsFound, setMedicationsFound] = useState<any[]>([]);
@@ -22,11 +17,11 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
   const [error, setError] = useState("");
   const [totalPrice, setTotalPrice] = useState(0); // State for total price
   const num = Number(sharedText);
-  const patientMeds = patientsMeds[66];
+  const patientMeds = patientsMeds[num];
+  console.log("Num " + num);
+  console.log("YOOOOO " + patientMeds.age);
   const patientMedicationJson = patientMeds.medicationJson ? JSON.parse(patientMeds.medicationJson) : null;
 
-
-  
   // Function to fetch medication data based on description
   const fetchMedication = async (name: string, ind: number) => {
     try {
@@ -77,6 +72,7 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
 
   // Function to extract medication names and check them in the database
   useEffect(() => {
+    console.log("Use effect");
     const fetchAllMedications = async () => {
       setLoading(true);
       const names = patientMedicationJson.map((med: any) => med.name);
@@ -90,7 +86,7 @@ const CostPerPatient = ({ sharedText }: { sharedText: string }) => {
     };
 
     fetchAllMedications();
-  }, []);
+  }, [sharedText]); // Add sharedText to the dependency array
 
   const updatedMedications = calculatePrice(); // Get the updated medications and calculate total price
 
