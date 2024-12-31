@@ -18,10 +18,12 @@
     "@mui/material": "^6.2.1",
     "@osdk/client": "^2.0.9",
     "@osdk/oauth": "^1.0.0",
+    "@reduxjs/toolkit": "^2.5.0",
     "@vercel/postgres": "^0.10.0",
     "next": "^15.1.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@next/env": "^14.2.16",

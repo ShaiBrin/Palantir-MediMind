@@ -1,19 +1,27 @@
 "use client";
 import React from "react";
+import LeftSide from "../components/leftSide";
+import RightSide from "../components/rightSide";
 
-export default function CostsLayout({ children }: { children: React.ReactNode }) {
+export default function CostsLayout({
+  sharedText,
+  setSharedText,
+}: {
+  sharedText: string;
+  setSharedText: (value: string) => void;
+}) {
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "column", // Stack the title on top
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
         width: "100%",
         marginTop: "20px",
-        backgroundColor: "#121212", // Dark background color
-        color: "#FFFFFF", // White font color for contrast
+        backgroundColor: "#121212",
+        color: "#FFFFFF",
       }}
     >
       {/* Title */}
@@ -31,35 +39,33 @@ export default function CostsLayout({ children }: { children: React.ReactNode })
         style={{
           display: "flex",
           width: "100%",
-          flexGrow: 1, // This makes the content fill remaining space
+          flexGrow: 1,
           marginTop: "20px",
         }}
       >
-        {/* Left side - 1/3 of the width */}
+        {/* Left side */}
         <div
           style={{
-            width: "33.33%", // 1/3 of the width
-            padding: "10px", // Adjust padding as needed
-            backgroundColor: "#1E1E1E", // Darker shade for left side
-            marginRight: "10px", // Add margin between left and right
-            color: "#FFFFFF", // Ensure text color matches the theme
+            width: "33.33%",
+            padding: "10px",
+            backgroundColor: "#1E1E1E",
+            marginRight: "10px",
+            color: "#FFFFFF",
           }}
         >
-          {/* Left component goes here */}
-          <div>Left Side Component</div>
+          <LeftSide sharedText={sharedText} setSharedText={setSharedText} />
         </div>
 
-        {/* Right side - 2/3 of the width */}
+        {/* Right side */}
         <div
           style={{
-            width: "66.66%", // 2/3 of the width
-            padding: "10px", // Adjust padding as needed
-            backgroundColor: "#292929", // Darker shade for right side
-            color: "#FFFFFF", // Ensure text color matches the theme
+            width: "66.66%",
+            padding: "10px",
+            backgroundColor: "#292929",
+            color: "#FFFFFF",
           }}
         >
-          {/* Right component goes here */}
-          {children}
+          <RightSide sharedText={sharedText} />
         </div>
       </div>
     </div>
