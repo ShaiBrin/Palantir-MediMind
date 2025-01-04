@@ -1,11 +1,12 @@
 # MediMind
-## Mission critical platform that classify structured medical information extracted from raw patient notes data while calculating the total medication cost per patient. 
+## Mission critical web platform that classify structured medical information extracted from raw patient notes data while calculating the total medication cost per patient. 
 
 ### References ###
 - Here's a workflow of the application [Video demo](https://youtu.be/Xqe-AljeQe8). 
 - Foundry's data is harnessed by the following [Compute module repository](https://github.com/ShaiBrin/Palantir-ComputeModules)
 - Here's a list of palantir other repository [Palantir AIP registry](https://github.com/palantir/aip-community-registry)
 - Here's a hello world osdk tutorial [Hello World OSDK](https://www.youtube.com/watch?v=3bdGiS74-xg)
+- Data source for medication price [National Drug Average Cost](https://data.medicaid.gov/dataset/a217613c-12bc-5137-8b3a-ada0e4dad1ff#api)
 
 
 
