@@ -3,6 +3,13 @@
 ## Premise
 #### Medimind classify structured medical information extracted from raw patient notes data while calculating the total medication cost per patient. 
 
+### References ###
+- Here's a workflow of the application [Video demo](https://youtu.be/Xqe-AljeQe8). 
+- Foundry's data is harnessed by the following [Compute module repository](https://github.com/ShaiBrin/Palantir-ComputeModules)
+- Here's a list of palantir other repository [Palantir AIP registry](https://github.com/palantir/aip-community-registry)
+- Here's a hello world osdk tutorial [Hello World OSDK](https://www.youtube.com/watch?v=3bdGiS74-xg)
+
+
 
 This project was generated with [`@osdk/create-app`](https://www.npmjs.com/package/@osdk/create-app) and demonstrates using the Ontology SDK package `@hospital-osdk/sdk` with React on top of Next.js. Check out the [Next.js](https://nextjs.org/docs) docs for further configuration.
 
