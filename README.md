@@ -1,7 +1,5 @@
 # MediMind
-
-## Premise
-#### Medimind classify structured medical information extracted from raw patient notes data while calculating the total medication cost per patient. 
+## Mission critical platform that classify structured medical information extracted from raw patient notes data while calculating the total medication cost per patient. 
 
 ### References ###
 - Here's a workflow of the application [Video demo](https://youtu.be/Xqe-AljeQe8). 
