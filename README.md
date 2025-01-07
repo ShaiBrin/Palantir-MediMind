@@ -52,7 +52,7 @@ To install and set up the project, follow these steps:
 
 ## References
 1. [Nation Average Drug Acquistion](https://data.medicaid.gov/dataset/a217613c-12bc-5137-8b3a-ada0e4dad1ff#api)
-2. [Video Demo](https://www.youtube.com/watch?v=Xqe-AljeQe8)
+2. [Video Demo](https://www.youtube.com/watch?v=xvXUtHxCL0s)
 3. [MediMind - Computes Modules](https://github.com/ShaiBrin/Palantir-ComputeModules)
 
 ## License
