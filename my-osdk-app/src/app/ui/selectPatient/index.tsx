@@ -2,14 +2,26 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSharedText } from "@/store";
-import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Button, List, ListItem, ListItemText, MenuItem, Select, Typography } from "@mui/material";
+import client from "@/lib/client";
+import { Osdk } from "@osdk/client";
+import { PatientSymptoms } from "@hospital-osdk/sdk";
+
+const patientSymptoms: Osdk.Instance<PatientSymptoms>[] = [];
+
+for await (const obj of client(PatientSymptoms).asyncIter()) {
+  patientSymptoms.push(obj);
+}
 
 const PatientSelect = () => {
-  const [selectedValue, setSelectedValue] = useState("0"); 
+  const [selectedValue, setSelectedValue] = useState("0");
+  const num = Number(selectedValue);
+  const selectedPatientSymp = patientSymptoms[num];
+
   const dispatch = useDispatch();
 
   const handleEnter = () => {
-    dispatch(setSharedText(selectedValue)); 
+    dispatch(setSharedText(selectedValue));
   };
 
   return (
@@ -43,6 +55,28 @@ const PatientSelect = () => {
           </MenuItem>
         ))}
       </Select>
+
+      {/* Display the patient symptoms above the Enter button */}
+      {selectedPatientSymp && (
+        <Box sx={{ marginTop: 2 }}>
+          <Typography variant="h6">Patient Symptoms:</Typography>
+          <div className="patient-symptoms">
+            <div className="info">
+              <Typography variant="body1">Age: {selectedPatientSymp.age}</Typography>
+            </div>
+            <div className="info">
+              <Typography variant="body1">Gender: {selectedPatientSymp.gender}</Typography>
+            </div>
+            <div className="info symptoms-list">
+              <Typography variant="body1">Symptoms:</Typography>
+              {selectedPatientSymp.symptoms.map((symptom, index) => (
+                <Typography variant="body2" key={index}>{symptom}</Typography>
+              ))}
+            </div>
+          </div>
+        </Box>
+      )}
+
       <Button
         onClick={handleEnter}
         variant="contained"

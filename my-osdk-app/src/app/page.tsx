@@ -4,7 +4,6 @@ import PatientSelect from "./ui/selectPatient";
 import PatientInformation from "./ui/infoPatient";
 import styles from "./page.module.css";
 
-
 function Home() {
   const authenticated = useAuthenticated();
 
@@ -18,7 +17,6 @@ function Home() {
       <div className={styles.left}>
       <PatientSelect />
     </div>
-
   
     <div className={styles.right}>
       <PatientInformation />

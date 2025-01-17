@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 import React, { useState, useEffect } from "react";
-import { Osdk } from "@osdk/client";
 import client from "@/lib/client";
 import { dosageMapping } from "@/utils/DosageMapping";
+import { Osdk } from "@osdk/client";
 import { PatientMedication } from "@hospital-osdk/sdk";
 
 const patientsMeds: Osdk.Instance<PatientMedication>[] = [];
@@ -22,9 +22,9 @@ const PatientInformation = () => {
   const [error, setError] = useState("");
   const [totalPrice, setTotalPrice] = useState(0); 
   const num = Number(sharedText);
-  const patientMeds = patientsMeds[num];
+  const selectedPatientMeds = patientsMeds[num];
 
-  const patientMedicationJson = patientMeds.medicationJson ? JSON.parse(patientMeds.medicationJson) : null;
+  const patientMedicationJson = selectedPatientMeds.medicationJson ? JSON.parse(selectedPatientMeds.medicationJson) : null;
 
   const fetchMedication = async (name: string, ind: number) => {
     try {
