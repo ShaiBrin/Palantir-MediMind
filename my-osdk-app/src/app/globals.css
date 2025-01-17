@@ -21,35 +21,3 @@ body {
 }
 
 
-.container {
-  display: flex;
-  flex-direction: column; /* Stack items vertically by default */
-  padding-bottom: 10px;
-  padding-top:20px;
-}
-
-/* Default behavior (for mobile and small screens) */
-.left,
-.right {
-  width: 100%;
-  padding-left: 50px;
-  padding-right: 20px;
-  padding-top:20px;
-}
-
-
-
-/* For larger screens (medium breakpoint: 768px) */
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row; /* Switch to row layout on medium and larger screens */
-  }
-
-  .left {
-    width: 40%; /* 2/5 of the container width */
-  }
-
-  .right {
-    width: 60%; /* 3/5 of the container width */
-  }
-}

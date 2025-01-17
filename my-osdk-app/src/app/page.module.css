@@ -1,7 +1,33 @@
-/* .methods {
-  padding: 2em;
-  gap: 2em;
+.container {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-} */
+  padding-bottom: 10px;
+  padding-top:20px;
+}
+
+
+.left{
+  padding-left: 20px;
+  padding-right: 20px
+}
+.right {
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 100px;
+  padding-top:20px;
+}
+
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row; 
+  }
+
+  .left {
+    width: 40%; 
+  }
+
+  .right {
+    width: 60%; 
+  }
+}

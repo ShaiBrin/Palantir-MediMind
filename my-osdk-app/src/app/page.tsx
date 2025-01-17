@@ -2,6 +2,8 @@
 import useAuthenticated from "@/lib/useAuthenticated";
 import PatientSelect from "./ui/selectPatient";
 import PatientInformation from "./ui/infoPatient";
+import styles from "./page.module.css";
+
 
 function Home() {
   const authenticated = useAuthenticated();
@@ -10,18 +12,15 @@ function Home() {
     return null;
   }
 
-
   return (
-   
 
-    <div className="container">
-    
-    <div className="left">
+    <div className={styles.container}>
+      <div className={styles.left}>
       <PatientSelect />
     </div>
 
-    
-    <div className="right">
+  
+    <div className={styles.right}>
       <PatientInformation />
     </div>
   </div>
