@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import { setSharedText } from "@/store";
 import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
 
-const LeftSide = () => {
-  const [selectedValue, setSelectedValue] = useState("0"); // State for dropdown
+const PatientSelect = () => {
+  const [selectedValue, setSelectedValue] = useState("0"); 
   const dispatch = useDispatch();
 
   const handleEnter = () => {
-    dispatch(setSharedText(selectedValue)); // Update the Redux state
+    dispatch(setSharedText(selectedValue)); 
   };
 
   return (
@@ -23,7 +23,7 @@ const LeftSide = () => {
         MenuProps={{
           PaperProps: {
             style: {
-              maxHeight: 200, // Adjust the max height as needed
+              maxHeight: 200,
               overflowY: 'auto',
             },
           },
@@ -55,4 +55,4 @@ const LeftSide = () => {
   );
 };
 
-export default LeftSide;
+export default PatientSelect;
