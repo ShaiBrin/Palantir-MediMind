@@ -1,6 +1,8 @@
 "use client";
 import useAuthenticated from "@/lib/useAuthenticated";
-import HomePageButtons from "./components/ui/HomePageButtons";
+import PatientSelect from "./ui/selectPatient";
+import PatientInformation from "./ui/infoPatient";
+import styles from "./page.module.css";
 
 function Home() {
   const authenticated = useAuthenticated();
@@ -9,10 +11,19 @@ function Home() {
     return null;
   }
 
-
   return (
-      <HomePageButtons />
-  );
+
+    <div className={styles.container}>
+      <div className={styles.left}>
+      <PatientSelect />
+    </div>
+  
+    <div className={styles.right}>
+      <PatientInformation />
+    </div>
+  </div>
+);
+  
 }
 
 export default Home;
